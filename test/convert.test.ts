@@ -1,28 +1,7 @@
-//@formatter:off
-var Joi         = require('@hapi/joi'),
-    convert     = require('../src/index'),
-    assert      = require('assert'),
-    jsonSchema  = require('json-schema');
-//@formatter:on
-
-/* jshint mocha:true */
-/* global suite, test */
-
-/**
- * Throws if schema !== expected or if schema fails to jsonSchema.validate()
- * @param {object} schema
- * @param {object} expected
- */
-assert.validate = function (schema, expected) {
-  var result = jsonSchema.validate(schema);
-  assert.deepEqual(schema, expected);
-  if ('object' === typeof result && Array.isArray(result.errors) && 0 === result.errors.length) {
-    return;
-  }
-  throw new Error('json-schema validation failed: %s', result.errors.join(','));
-};
-
-suite('convert', function () {
+import * as Joi from '@hapi/joi'
+import convert from '../src/index'
+import * as assert from 'assert'
+import * as jsonSchema from 'json-schema'
 
   test('object defaults', function () {
     var joi = Joi.object(),
@@ -32,9 +11,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: true,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('empty object will not allow additional properties', function () {
     var joi = Joi.object({}),
@@ -44,9 +23,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: false,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object label', function () {
     var joi = Joi.object().label('Title'),
@@ -57,9 +36,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: true,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object options language label', function () {
     var joi = Joi.object().options({language:{label: 'Title'}}),
@@ -70,9 +49,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: true,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object description', function () {
     var joi = Joi.object().description('woot'),
@@ -83,9 +62,9 @@ suite('convert', function () {
           patterns: [],
           additionalProperties: true,
           description: 'woot'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object example', function () {
     var joi = Joi.object().example({ key: 'value' }),
@@ -97,9 +76,9 @@ suite('convert', function () {
           additionalProperties: true,
           example: { key: 'value' },
           examples: [{ key: 'value' }]
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object without unknown keys', function () {
     var joi = Joi.object().unknown(false),
@@ -109,9 +88,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: true,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object allow unknown', function () {
     var joi = Joi.object().unknown(true),
@@ -121,9 +100,9 @@ suite('convert', function () {
           properties: {},
           patterns: [],
           additionalProperties: true
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object', function () {
     let joi = Joi.object().keys({
@@ -153,9 +132,9 @@ suite('convert', function () {
           },
           patterns: [],
           additionalProperties: false
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object property required', function () {
     let joi = Joi.object().keys({
@@ -186,9 +165,9 @@ suite('convert', function () {
           },
           patterns: [],
           additionalProperties: false
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('object property forbidden', function(){
     let joi = Joi.object().keys({
@@ -216,18 +195,18 @@ suite('convert', function () {
           },
           patterns: [],
           additionalProperties: false,
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('type: array', function () {
     var joi = Joi.array(),
         schema = convert(joi),
         expected = {
           type: 'array'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('enum', function () {
     var joi = Joi.string().valid(['a', 'b']),
@@ -235,10 +214,10 @@ suite('convert', function () {
         expected = {
           'type': 'string',
           'enum': ['a', 'b']
-        };
-    //console.log('.enum: %s', util.inspect({type: joi._type, schema: schema}, {depth: 10}));
-    assert.validate(schema, expected);
-  });
+        }
+    //console.log('.enum: %s', util.inspect({type: joi._type, schema: schema}, {depth: 10}))
+    assert.validate(schema, expected)
+  })
 
   test('alternatives -> oneOf', function () {
 
@@ -267,11 +246,11 @@ suite('convert', function () {
               ]
             }
           }
-        };
+        }
 
-    //console.log('alt -> oneOf: %s', util.inspect({type: joi._type, schema: schema}, {depth: 10}));
-    assert.validate(schema, expected);
-  });
+    //console.log('alt -> oneOf: %s', util.inspect({type: joi._type, schema: schema}, {depth: 10}))
+    assert.validate(schema, expected)
+  })
 
   test('string min/max', function () {
     var joi = Joi.string().min(5).max(100),
@@ -280,9 +259,9 @@ suite('convert', function () {
           type: 'string',
           minLength: 5,
           maxLength: 100
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('string -> maxLength', function () {
     var joi = Joi.string().length(5),
@@ -291,9 +270,9 @@ suite('convert', function () {
           type: 'string',
           maxLength: 5,
           minLength: 5
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('string email', function () {
     var joi = Joi.string().email(),
@@ -301,9 +280,9 @@ suite('convert', function () {
         expected = {
           type: 'string',
           format: 'email'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('string uri', function () {
     var joi = Joi.string().uri(),
@@ -311,9 +290,9 @@ suite('convert', function () {
         expected = {
           type: 'string',
           format: 'uri'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('date', function () {
     var joi = Joi.date(),
@@ -321,27 +300,27 @@ suite('convert', function () {
         expected = {
           type: 'string',
           format: 'date-time'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('date (javascript timestamp)', function () {
     var joi = Joi.date().timestamp(),
         schema = convert(joi),
         expected = {
           type: 'integer',
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('date (unix timestamp)', function () {
     var joi = Joi.date().timestamp('unix'),
       schema = convert(joi),
       expected = {
         type: 'integer',
-      };
-    assert.validate(schema, expected);
-  });
+      }
+    assert.validate(schema, expected)
+  })
 
   test('string regex -> pattern', function () {
     let joi = Joi.string().regex(/^[a-z]$/),
@@ -349,9 +328,9 @@ suite('convert', function () {
         expected = {
           type: 'string',
           pattern: '^[a-z]$'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('string allow', function () {
     let joi = Joi.string().allow(['a', 'b', '', null]),
@@ -371,10 +350,10 @@ suite('convert', function () {
               type: 'string'
             }
           ]
-        };
-    //console.log('string allow: %s', util.inspect({type: joi._type, joi:joi, schema: schema}, {depth: 10}));
-    assert.validate(schema, expected);
-  });
+        }
+    //console.log('string allow: %s', util.inspect({type: joi._type, joi:joi, schema: schema}, {depth: 10}))
+    assert.validate(schema, expected)
+  })
 
   test('number min/max', function () {
     let joi = Joi.number().min(0).max(100),
@@ -383,9 +362,9 @@ suite('convert', function () {
           type: 'number',
           minimum: 0,
           maximum: 100
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('number greater/less', function () {
     let joi = Joi.number().greater(0).less(100),
@@ -396,9 +375,9 @@ suite('convert', function () {
           exclusiveMinimum: true,
           maximum: 100,
           exclusiveMaximum: true
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('number precision', function () {
     let joi = Joi.number().precision(2),
@@ -406,18 +385,18 @@ suite('convert', function () {
         expected = {
           type: 'number',
           multipleOf: 0.01
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('integer', function () {
     var joi = Joi.number().integer(),
         schema = convert(joi),
         expected = {
           type: 'integer'
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('array min/max', function () {
     let joi = Joi.array().min(5).max(100),
@@ -426,9 +405,9 @@ suite('convert', function () {
           type: 'array',
           minItems: 5,
           maxItems: 100
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('array length', function () {
     let joi = Joi.array().length(100),
@@ -437,9 +416,9 @@ suite('convert', function () {
           type: 'array',
           minItems: 100,
           maxItems: 100
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('array unique', function () {
     let joi = Joi.array().unique(),
@@ -447,9 +426,9 @@ suite('convert', function () {
         expected = {
           type: 'array',
           uniqueItems: true
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('array inclusions', function () {
     let joi = Joi.array().items(Joi.string()),
@@ -457,9 +436,9 @@ suite('convert', function () {
         expected = {
           type: 'array',
           items: {type: 'string'}
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('array ordered (tuple-like)', function () {
     let joi = Joi.array().ordered(Joi.string().required(), Joi.number().optional()),
@@ -467,18 +446,18 @@ suite('convert', function () {
         expected = {
           type: 'array',
           ordered: [{type: 'string'}, {type: 'number'}]
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('joi any', function () {
     let joi = Joi.any(),
         schema = convert(joi),
         expected = {
           type: ['array', 'boolean', 'number', 'object', 'string', 'null']
-        };
-    assert.validate(schema, expected);
-  });
+        }
+    assert.validate(schema, expected)
+  })
 
   test('joi binary with content encoding', function () {
     let joi = Joi.binary().encoding('base64'),
@@ -487,9 +466,9 @@ suite('convert', function () {
         type: 'string',
         contentMediaType: 'text/plain',
         contentEncoding: 'base64'
-      };
-    assert.validate(schema, expected);
-  });
+      }
+    assert.validate(schema, expected)
+  })
 
   test('joi binary with content type', function () {
     let joi = Joi.binary().meta({ contentMediaType: 'image/png' }),
@@ -498,9 +477,9 @@ suite('convert', function () {
         type: 'string',
         contentMediaType: 'image/png',
         contentEncoding: 'binary'
-      };
-    assert.validate(schema, expected);
-  });
+      }
+    assert.validate(schema, expected)
+  })
 
   test('big and complicated', function () {
     let joi = Joi.object({
@@ -512,24 +491,24 @@ suite('convert', function () {
           anArrayOfNumbersOrStrings: Joi.array().items(Joi.alternatives(Joi.number(), Joi.string()))
         }),
         schema = convert(joi),
-        expected = require('./fixtures/complicated.json');
+        expected = require('./fixtures/complicated.json')
 
-    assert.validate(schema, expected);
+    assert.validate(schema, expected)
 
     // now make it fail
-    expected.properties.aForbiddenString={type:'string'};
+    expected.properties.aForbiddenString={type:'string'}
 
     try {
-      assert.validate(schema,expected);
+      assert.validate(schema,expected)
     }
     catch(e){
-      //console.warn(e);
+      //console.warn(e)
       if(e.name !== 'AssertionError' && e.operator !== 'deepEqual'){
-        throw e;
+        throw e
       }
     }
 
-  });
+  })
 
   test('joi.when', function () {
     let joi = Joi.object({
@@ -563,19 +542,19 @@ suite('convert', function () {
           patterns: [],
           additionalProperties: false,
           required: ['a']
-        };
-    //console.log('when: %s', util.inspect({type:joi._type,schema:schema}, {depth: 10}));
-    assert.validate(schema, expected);
-  });
+        }
+    //console.log('when: %s', util.inspect({type:joi._type,schema:schema}, {depth: 10}))
+    assert.validate(schema, expected)
+  })
 
   test('joi.options.presence = required', function () {
       const reqJoi = Joi.defaults(schema => schema.options({
           presence: 'required'
-      }));
+      }))
       const schema = reqJoi.object({
           'name': reqJoi.string(),
           'desc': reqJoi.string().optional()
-      });
+      })
       assert.validate(convert(schema), {
           additionalProperties: false,
           patterns: [],
@@ -591,6 +570,6 @@ suite('convert', function () {
               "name"
           ],
           type: "object"
-      });
-  });
-});
+      })
+  })
+
