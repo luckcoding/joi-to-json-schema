@@ -1,4 +1,4 @@
-export const string = (schema, joi) => {
+export const string = (_convert, schema, joi) => {
     schema.type = 'string'
     joi._rules.forEach(test => {
         switch (test.name) {

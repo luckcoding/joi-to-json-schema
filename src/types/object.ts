@@ -3,6 +3,7 @@ import * as Joi from '@hapi/joi'
 export const object = (convert, schema, joi: Joi.Schema, transformer) => {
     schema.type = 'object'
     schema.properties = {}
+    console.log(joi)
     schema.additionalProperties = Boolean(
         joi._flags.allowUnknown || !joi.$_terms.keys
     )

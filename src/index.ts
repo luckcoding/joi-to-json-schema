@@ -11,11 +11,11 @@ import * as TYPES from './types'
  * @returns {JSONSchema}
  */
 const convert = (joi, transformer = null) => {
+
     assert(
         'object' === typeof joi && true === Joi.isSchema(joi),
         'requires a joi schema object'
     )
-
     assert(joi.type, 'joi schema object must have a type')
 
     if (!TYPES[joi.type]) {
@@ -30,6 +30,7 @@ const convert = (joi, transformer = null) => {
             'transformer must be a function'
         )
     }
+    console.log(joi)
 
     // JSON Schema root for this type.
     const schema: any = {}
@@ -53,7 +54,6 @@ const convert = (joi, transformer = null) => {
     } else if (joi?._flags?.label) {
         schema.title = joi._flags.label
     }
-
     // Checking for undefined and null explicitly to allow false and 0 values
     if (
         joi._flags &&

@@ -1,4 +1,4 @@
-export const binary = (schema, joi) => {
+export const binary = (_convert, schema, joi) => {
     schema.type = 'string'
     schema.contentMediaType =
         joi._meta.length > 0 && joi._meta[0].contentMediaType

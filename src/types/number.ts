@@ -1,4 +1,4 @@
-export const number = (schema, joi) => {
+export const number = (_convert, schema, joi) => {
     schema.type = 'number'
     joi._tests.forEach(test => {
         switch (test.name) {
