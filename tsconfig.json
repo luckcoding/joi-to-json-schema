@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "CommonJs",
+        "declaration": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false,
+        "downlevelIteration": true,
+        "resolveJsonModule": true,
+        "rootDir": "./src",
+        "outDir": "./lib",
+        "lib": ["es2017"]
+    },
+    "exclude": ["**/node_modules", "**/lib", "**/test"]
+}

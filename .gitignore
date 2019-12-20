@@ -1,5 +1,5 @@
 .idea
-/node_modules
-/build
-/tmp
+.vscode
+node_modules
+lib
 npm-debug.log
