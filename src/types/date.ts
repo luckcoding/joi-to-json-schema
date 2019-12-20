@@ -1,5 +1,6 @@
 export const date = (_convert, schema, joi) => {
-    if (joi._flags.timestamp) {
+    const format = joi._flags.format
+    if (format === 'unix' || format === 'javascript') {
         schema.type = 'integer'
         return schema
     }

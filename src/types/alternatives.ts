@@ -1,7 +1,7 @@
 export const alternatives = (convert, schema, joi, transformer) => {
     const result = (schema.oneOf = [])
 
-    joi._inner.matches.forEach(function(match) {
+    joi.$_terms.matches.forEach(match => {
         if (match.schema) {
             return result.push(convert(match.schema, transformer))
         }

@@ -1,11 +1,8 @@
 export const binary = (_convert, schema, joi) => {
     schema.type = 'string'
-    schema.contentMediaType =
-        joi._meta.length > 0 && joi._meta[0].contentMediaType
-            ? joi._meta[0].contentMediaType
-            : 'text/plain'
-    schema.contentEncoding = joi._flags.encoding
-        ? joi._flags.encoding
-        : 'binary'
+    const mediaType = joi?.$_terms?.metas[0]?.contentMediaType
+    schema.contentMediaType = mediaType ? mediaType : 'text/plain'
+    const encoding = joi?._flags?.encoding
+    schema.contentEncoding = encoding ? encoding : 'binary'
     return schema
 }

@@ -3,10 +3,10 @@ import * as Joi from '@hapi/joi'
 export const object = (convert, schema, joi: Joi.Schema, transformer) => {
     schema.type = 'object'
     schema.properties = {}
-    console.log(joi)
     schema.additionalProperties = Boolean(
         joi._flags.allowUnknown || !joi.$_terms.keys
     )
+    schema.patterns = []
     if (joi.$_terms.patterns) {
         schema.patterns = joi.$_terms.patterns.map(pattern => {
             return {
@@ -20,16 +20,16 @@ export const object = (convert, schema, joi: Joi.Schema, transformer) => {
     }
 
     joi.$_terms.keys.forEach(property => {
-        if (property.schema._flags.presence !== 'forbidden') {
+        const flagPresence = property?.schema?._flags?.presence
+        const prefPresence = property.schema?._preferences?.presence
+        if (flagPresence !== 'forbidden') {
             schema.properties[property.key] = convert(
                 property.schema,
                 transformer
             )
             if (
-                property.schema._flags.presence === 'required' ||
-                (property.schema._settings &&
-                    property.schema._settings.presence === 'required' &&
-                    property.schema._flags.presence !== 'optional')
+                flagPresence === 'required' ||
+                (prefPresence === 'required' && flagPresence !== 'optional')
             ) {
                 schema.required = schema.required || []
                 schema.required.push(property.key)

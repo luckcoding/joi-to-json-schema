@@ -5,9 +5,9 @@ export const string = (_convert, schema, joi) => {
             case 'email':
                 schema.format = 'email'
                 break
-            case 'regex':
+            case 'pattern':
                 const args = test.args
-                const pattern = args && args.pattern ? args.pattern : args
+                const pattern = args && args.regex ? args.regex : args
                 schema.pattern = String(pattern)
                     .replace(/^\//, '')
                     .replace(/\/$/, '')

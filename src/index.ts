@@ -11,7 +11,6 @@ import * as TYPES from './types'
  * @returns {JSONSchema}
  */
 const convert = (joi, transformer = null) => {
-
     assert(
         'object' === typeof joi && true === Joi.isSchema(joi),
         'requires a joi schema object'
@@ -30,22 +29,21 @@ const convert = (joi, transformer = null) => {
             'transformer must be a function'
         )
     }
-    console.log(joi)
 
     // JSON Schema root for this type.
     const schema: any = {}
-
     // Copy over the details that all schemas may have...
-    if (joi._description) {
-        schema.description = joi._description
+    if (joi?._flags?.description) {
+        schema.description = joi?._flags?.description
+    }
+    const joiExamples = joi?.$_terms?.examples
+    if (joiExamples && joiExamples.length > 0) {
+        // schema.examples = joiExamples.map(e => e.value)
+        schema.examples = joiExamples
     }
 
-    if (joi._examples && joi._examples.length > 0) {
-        schema.examples = joi._examples.map(e => e.value)
-    }
-
-    if (joi._examples && joi._examples.length === 1) {
-        schema.example = joi._examples[0].value
+    if (joiExamples && joiExamples.length === 1) {
+        schema.example = joiExamples[0]
     }
 
     // Add the label as a title if it exists
@@ -62,27 +60,26 @@ const convert = (joi, transformer = null) => {
     ) {
         schema['default'] = joi._flags.default
     }
-
     if (
         joi._valids &&
-        joi._valids._set &&
-        (joi._valids._set.size || joi._valids._set.length)
+        joi._valids._values &&
+        (joi._valids._values.size || joi._valids._values.length)
     ) {
-        if (Array.isArray(joi._inner.children) || !joi._flags.allowOnly) {
+        if (Array.isArray(joi.$_terms.items) || !joi._flags.only) {
             return {
                 anyOf: [
                     {
                         type: joi.type,
-                        enum: [...joi._valids._set]
+                        enum: [...joi._valids._values]
                     },
-                    TYPES[joi.type](schema, joi, transformer)
+                    TYPES[joi.type](convert, schema, joi, transformer)
                 ]
             }
         }
-        schema['enum'] = [...joi._valids._set]
+        schema['enum'] = [...joi._valids._values]
     }
 
-    let result = TYPES[joi.type](schema, joi, transformer)
+    let result = TYPES[joi.type](convert, schema, joi, transformer)
 
     if (transformer) {
         result = transformer(result, joi)
