@@ -15,7 +15,7 @@ objects for existing tools which happen to currently consume JSON Schema.
 
 
 ## Installation
-> npm install joi-to-json-schema
+> npm install @yeongjet/joi-to-json-schema
 
 
 
