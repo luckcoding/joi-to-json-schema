@@ -1,5 +1,5 @@
 import * as Joi from '@hapi/joi'
-import convert from '../src/index'
+import { convert } from '../src/index'
 import * as fs from 'fs'
 import * as path from 'path'
 

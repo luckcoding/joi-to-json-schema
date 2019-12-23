@@ -88,7 +88,7 @@ const convert = (joi, transformer = null) => {
     return result
 }
 convert.TYPES = TYPES
-export default convert
+export { convert }
 /**
  * Joi Validation Object
  * @typedef {object} JoiValidation

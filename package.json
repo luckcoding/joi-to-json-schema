@@ -1,6 +1,6 @@
 {
   "name": "@yeongjet/joi-to-json-schema",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Joi -> JSON Schema Converter (support joi v16.0)",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -38,7 +38,6 @@
   },
   "homepage": "https://github.com/lightsofapollo/joi-to-json-schema",
   "devDependencies": {
-    "@hapi/joi": "^16.1.8",
     "@types/hapi__joi": "^16.0.4",
     "@types/jest": "^24.0.24",
     "@types/node": "^12.12.21",
@@ -54,5 +53,8 @@
     "prettier": "^1.19.1",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "@hapi/joi": "^16.1.8"
   }
 }
