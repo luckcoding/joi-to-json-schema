@@ -1,4 +1,4 @@
-import * as Joi from '@hapi/joi'
+import * as Joi from 'joi'
 
 export const object = (convert, schema, joi: Joi.Schema, transformer) => {
     schema.type = 'object'

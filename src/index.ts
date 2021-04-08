@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import * as Joi from '@hapi/joi'
+import * as Joi from 'joi'
 import * as TYPES from './types'
 
 /**

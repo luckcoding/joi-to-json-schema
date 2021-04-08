@@ -1,4 +1,4 @@
-import * as Joi from '@hapi/joi'
+import * as Joi from 'joi'
 import { convert } from '../src/index'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -261,7 +261,9 @@ test('alternatives -> oneOf', () => {
 })
 
 test('string min/max', () => {
-    const joiSchema = Joi.string().min(5).max(100)
+    const joiSchema = Joi.string()
+        .min(5)
+        .max(100)
     const output = convert(joiSchema)
     const target = {
         type: 'string',
@@ -358,7 +360,9 @@ test('string allow', () => {
 })
 
 test('number min/max', () => {
-    const joiSchema = Joi.number().min(0).max(100)
+    const joiSchema = Joi.number()
+        .min(0)
+        .max(100)
     const output = convert(joiSchema)
     const target = {
         type: 'number',
@@ -369,7 +373,9 @@ test('number min/max', () => {
 })
 
 test('number greater/less', () => {
-    const joiSchema = Joi.number().greater(0).less(100)
+    const joiSchema = Joi.number()
+        .greater(0)
+        .less(100)
     const output = convert(joiSchema)
     const target = {
         type: 'number',
@@ -401,7 +407,9 @@ test('integer', () => {
 })
 
 test('array min/max', () => {
-    const joiSchema = Joi.array().min(5).max(100)
+    const joiSchema = Joi.array()
+        .min(5)
+        .max(100)
     const output = convert(joiSchema)
     const target = {
         type: 'array',
@@ -489,11 +497,20 @@ test('joi binary with content type', () => {
 test('big and complicated', () => {
     const joiSchema = Joi.object({
         aFormattedString: Joi.string().regex(/^[ABC]_\w+$/),
-        aFloat: Joi.number().default(0.8).min(0.0).max(1.0),
-        anInt: Joi.number().required().precision(0).greater(0),
+        aFloat: Joi.number()
+            .default(0.8)
+            .min(0.0)
+            .max(1.0),
+        anInt: Joi.number()
+            .required()
+            .precision(0)
+            .greater(0),
         aForbiddenString: Joi.string().forbidden(),
         anArrayOfFloats: Joi.array().items(
-            Joi.number().default(0.8).min(0.0).max(1.0)
+            Joi.number()
+                .default(0.8)
+                .min(0.0)
+                .max(1.0)
         ),
         anArrayOfNumbersOrStrings: Joi.array().items(
             Joi.alternatives(Joi.number(), Joi.string())
